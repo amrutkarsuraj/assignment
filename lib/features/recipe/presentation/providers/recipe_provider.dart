@@ -18,7 +18,6 @@ class RecipeNotifier extends StateNotifier<AsyncValue<List<RecipeModel>>> {
 
   RecipeNotifier(this.ref) : super(const AsyncLoading());
 
-  /// 🔥 LOAD RECIPES (TIME + LOCATION BASED)
   Future<void> loadRecipes() async {
     try {
       final repo = ref.read(repositoryProvider);
@@ -30,10 +29,8 @@ class RecipeNotifier extends StateNotifier<AsyncValue<List<RecipeModel>>> {
 
       final data = await repo.getRecipes(category);
 
-      /// 🔥 NEVER THROW ERROR IF DATA EXISTS
       state = AsyncData(data);
     } catch (e) {
-      /// fallback instead of error
       final fallback = ref.read(repositoryProvider).getFavorites();
 
       if (fallback.isNotEmpty) {
@@ -44,9 +41,7 @@ class RecipeNotifier extends StateNotifier<AsyncValue<List<RecipeModel>>> {
     }
   }
 
-  /// 🔥 CORE LOGIC (INTERVIEW IMPORTANT)
   String _resolveCategory(String mealType, String country) {
-    // Location priority first
     switch (country) {
       case "India":
         return "Vegetarian";
@@ -56,11 +51,9 @@ class RecipeNotifier extends StateNotifier<AsyncValue<List<RecipeModel>>> {
         return "Seafood";
     }
 
-    // fallback to time-based mapping
     return mapMealTypeToApiCategory(mealType);
   }
 
-  /// 🔍 SEARCH (WITH DEBOUNCE FROM UI)
   Future<void> search(String query) async {
     if (query.isEmpty) {
       await loadRecipes();
@@ -77,8 +70,7 @@ class RecipeNotifier extends StateNotifier<AsyncValue<List<RecipeModel>>> {
         final data = await repo.searchRecipes(query);
         state = AsyncData(data);
       } else {
-        /// 🔥 OFFLINE SEARCH (IMPORTANT)
-        final cached = repo.getFavorites(); // or cached recipes
+        final cached = repo.getFavorites();
 
         final filtered = cached
             .where((r) =>
@@ -92,7 +84,6 @@ class RecipeNotifier extends StateNotifier<AsyncValue<List<RecipeModel>>> {
     }
   }
 
-  /// ❤️ FAVORITES
   Future<void> toggleFavorite(RecipeModel recipe) async {
     final repo = ref.read(repositoryProvider);
     await repo.toggleFavorite(recipe);

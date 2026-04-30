@@ -9,7 +9,7 @@ class RecipeRemoteDS {
   Future<List<RecipeModel>> fetchRecipes(String category) async {
     final res = await client.get("filter.php", params: {"c": category});
 
-    if (res.data['meals'] == null) return []; // 🔥 IMPORTANT
+    if (res.data['meals'] == null) return [];
 
     return (res.data['meals'] as List)
         .map((e) => RecipeModel.fromJson(e))

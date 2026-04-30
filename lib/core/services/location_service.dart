@@ -21,7 +21,7 @@ class LocationService {
 
       return placemarks.first.country ?? "Unknown";
     } catch (e) {
-      return "Unknown"; // prevent crash
+      return "Unknown";
     }
   }
 }

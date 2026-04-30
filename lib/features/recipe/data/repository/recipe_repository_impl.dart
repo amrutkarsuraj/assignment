@@ -4,7 +4,6 @@ import '../../../../core/network/network_info.dart';
 import '../datasource/recipe_local_ds.dart';
 import '../datasource/recipe_remote_ds.dart';
 import '../models/recipe_model.dart';
-import '../../domain/repository/recipe_repository.dart';
 
 class RecipeRepositoryImpl implements RecipeRepository {
   final RecipeRemoteDS remote;
@@ -27,10 +26,9 @@ class RecipeRepositoryImpl implements RecipeRepository {
         }
       }
     } catch (e) {
-      // ignore and fallback
+
     }
 
-    /// 🔥 FALLBACK (IMPORTANT)
     final cached = local.getCachedRecipes();
     if (cached.isNotEmpty) return cached;
 

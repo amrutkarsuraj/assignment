@@ -15,7 +15,7 @@ class NotificationService {
     await _plugin.initialize(
       settings: settings,
       onDidReceiveNotificationResponse: (r) {
-        // handle tap if needed
+
       },
     );
 
@@ -84,7 +84,7 @@ class NotificationService {
         android: androidDetails,
       ),
       androidScheduleMode: AndroidScheduleMode.exactAllowWhileIdle,
-      matchDateTimeComponents: DateTimeComponents.time, // 🔁 daily repeat
+      matchDateTimeComponents: DateTimeComponents.time,
     );
   }
 

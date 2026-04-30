@@ -50,7 +50,7 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp( // ✅ IMPORTANT
+    return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Smart Recipes',
       theme: ThemeData(

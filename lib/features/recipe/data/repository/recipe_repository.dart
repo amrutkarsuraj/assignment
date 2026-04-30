@@ -4,6 +4,6 @@ abstract class RecipeRepository {
   Future<List<RecipeModel>> getRecipes(String category);
   Future<List<RecipeModel>> searchRecipes(String query);
 
-  Future<void> toggleFavorite(RecipeModel recipe); // ✅ REQUIRED
-  List<RecipeModel> getFavorites(); // ✅ REQUIRED
+  Future<void> toggleFavorite(RecipeModel recipe);
+  List<RecipeModel> getFavorites();
 }

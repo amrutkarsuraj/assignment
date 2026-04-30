@@ -2,20 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../../core/utils/debounce.dart';
 import '../providers/recipe_provider.dart';
-import '../providers/repository_provider.dart';
 import '../widgets/shimmer_loader.dart';
 import '../widgets/favorite_icon.dart';
 import 'detail_screen.dart';
 
-import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 
-import '../../../../core/utils/debounce.dart';
-import '../providers/recipe_provider.dart';
-import '../widgets/shimmer_loader.dart';
-import '../widgets/favorite_icon.dart';
-import 'detail_screen.dart';
+
 import 'favorites_screen.dart';
 
 class HomeScreen extends ConsumerStatefulWidget {
@@ -57,7 +50,6 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
       ),
       body: Column(
         children: [
-          /// 🔍 SEARCH
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 12),
             child: Text(
@@ -83,13 +75,10 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
             ),
           ),
 
-          /// 📦 CONTENT
           Expanded(
             child: state.when(
-              /// 🔄 LOADING
               loading: () => const ShimmerLoader(),
 
-              /// ❌ ERROR UI
               error: (e, _) {
                 WidgetsBinding.instance.addPostFrameCallback((_) {
                   ScaffoldMessenger.of(context).showSnackBar(
@@ -118,9 +107,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                 );
               },
 
-              /// ✅ DATA
               data: (recipes) {
-                /// 📭 EMPTY STATE (OFFLINE SUPPORT)
                 if (recipes.isEmpty) {
                   return const Center(
                     child: Text("No recipes found / Offline mode 😔"),
@@ -138,7 +125,6 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                     itemBuilder: (_, i) {
                       final recipe = recipes[i];
 
-                      /// ❤️ REAL FAVORITE STATE
                       final favorites = notifier.getFavorites();
                       final isFav = favorites.any((e) => e.id == recipe.id);
 
@@ -151,7 +137,6 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                         child: ListTile(
                           contentPadding: const EdgeInsets.all(10),
 
-                          /// 🖼 IMAGE WITH CACHE + HERO
                           leading: Hero(
                             tag: recipe.id,
                             child: ClipRRect(
@@ -177,7 +162,6 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                             overflow: TextOverflow.ellipsis,
                           ),
 
-                          /// ❤️ FAVORITE ANIMATION
                           trailing: FavoriteIcon(
                             isFav: isFav,
                             onTap: () {
@@ -185,7 +169,6 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                             },
                           ),
 
-                          /// 🔁 HERO NAVIGATION
                           onTap: () {
                             Navigator.push(
                               context,

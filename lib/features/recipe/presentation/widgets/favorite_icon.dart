@@ -20,7 +20,7 @@ class FavoriteIcon extends StatelessWidget {
             ScaleTransition(scale: animation, child: child),
         child: Icon(
           isFav ? Icons.favorite : Icons.favorite_border,
-          key: ValueKey(isFav), // 🔥 IMPORTANT
+          key: ValueKey(isFav),
           color: Colors.red,
           size: 28,
         ),
