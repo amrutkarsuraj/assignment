@@ -67,12 +67,26 @@ class RecipeNotifier extends StateNotifier<AsyncValue<List<RecipeModel>>> {
       return;
     }
 
-    state = const AsyncLoading(); // 🔥 ensures shimmer
+    state = const AsyncLoading();
+
+    final repo = ref.read(repositoryProvider);
+    final isConnected = await ref.read(networkProvider).isConnected;
 
     try {
-      final repo = ref.read(repositoryProvider);
-      final data = await repo.searchRecipes(query);
-      state = AsyncData(data);
+      if (isConnected) {
+        final data = await repo.searchRecipes(query);
+        state = AsyncData(data);
+      } else {
+        /// 🔥 OFFLINE SEARCH (IMPORTANT)
+        final cached = repo.getFavorites(); // or cached recipes
+
+        final filtered = cached
+            .where((r) =>
+            r.name.toLowerCase().contains(query.toLowerCase()))
+            .toList();
+
+        state = AsyncData(filtered);
+      }
     } catch (e) {
       state = AsyncError(e, StackTrace.current);
     }
